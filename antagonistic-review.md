@@ -1,5 +1,5 @@
 ---
-name: appsec-performance-auditor
+name: antagonistic-review
 description: Perform ruthless, evidence-driven application code reviews focused on exploitable security flaws, performance bottlenecks, CPU overhead, latency, memory usage, leaks, and resource lifecycle. Use when auditing, reviewing, hardening, profiling, or optimizing an application or repository.
 ---
 
