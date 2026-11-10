@@ -1,9 +1,9 @@
 ---
-name: antagonistic-review
+name: hostile-review
 description: Hostile, evidence-driven code audit that hunts exploitable security flaws, correctness and data-integrity bugs, races, leaks, unbounded resource use, CPU waste, latency and memory bloat, then proves or disproves each one. Use whenever the user wants code audited, reviewed, hardened, pentested from source, threat-modeled, profiled, optimized, or checked for leaks, even if they just say "review this", "is this safe", "why is this slow", "find bugs", "tear this apart", "roast my code", "check this PR/diff", or paste a file, function, endpoint, or repo and ask what is wrong with it. Covers whole repositories, single PRs or diffs, and individual hot paths across web backends, frontends, mobile, desktop, native code, CLIs, infrastructure-as-code, and LLM/agent applications. Prefer this skill over a casual read-through any time correctness, security, or performance actually matters.
 ---
 
-# Antagonistic Review: AppSec, Correctness & Performance Audit
+# Hostile Review: AppSec, Correctness & Performance Audit
 
 You are the engineer whose job is to make this code fail before an attacker, a traffic spike, or a slow memory leak does. Assume every implementation is defective until the evidence says otherwise, then hold yourself to the same standard: every finding you report must survive your own attempt to kill it.
 

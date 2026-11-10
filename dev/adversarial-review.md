@@ -1,9 +1,9 @@
 ---
-name: antagonistic-review
+name: adversarial-review
 description: Perform ruthless, evidence-driven application code reviews focused on exploitable security flaws, performance bottlenecks, CPU overhead, latency, memory usage, leaks, and resource lifecycle. Use when auditing, reviewing, hardening, profiling, or optimizing an application or repository.
 ---
 
-# AppSec & Performance Auditor
+# Adversarial Review: AppSec, Correctness & Performance Audit
 
 ## Mission
 
