@@ -1,0 +1,361 @@
+#!/usr/bin/env bash
+
+unset CDPATH
+shopt -s nullglob
+
+usage="Usage: ${0##*/} TARGET [--skill=<path>]
+Targets:
+  all         All known agent targets (or targets defined in config file)
+  claude      Claude skills (~/.claude/skills)
+  gemini      Gemini skills (~/.gemini/skills)
+  antigravity Antigravity skills (~/.gemini/antigravity-cli/skills, ~/.gemini/config/skills)
+  codex       Codex skills (~/.codex/skills)"
+
+target_arg=
+skill_arg=
+
+while (($# > 0)); do
+    case $1 in
+    -h | --help)
+        printf '%s\n' "$usage"
+        exit 0
+        ;;
+    --target=*)
+        target_arg=${1#--target=}
+        shift
+        ;;
+    --target)
+        if (($# < 2)); then
+            printf 'Error: --target requires an argument\n' >&2
+            exit 64
+        fi
+        target_arg=$2
+        shift 2
+        ;;
+    --skill=*)
+        skill_arg=${1#--skill=}
+        shift
+        ;;
+    --skill)
+        if (($# < 2)); then
+            printf 'Error: --skill requires an argument\n' >&2
+            exit 64
+        fi
+        skill_arg=$2
+        shift 2
+        ;;
+    -*)
+        printf 'Error: unknown option: %s\n\n%s\n' "$1" "$usage" >&2
+        exit 64
+        ;;
+    *)
+        if [[ -z $target_arg ]]; then
+            target_arg=$1
+            shift
+        else
+            printf 'Error: unexpected positional argument: %s\n\n%s\n' "$1" "$usage" >&2
+            exit 64
+        fi
+        ;;
+    esac
+done
+
+if [[ -z $target_arg ]]; then
+    printf '%s\n' "$usage"
+    exit 0
+fi
+
+if [[ $HOME != /* ]]; then
+    printf 'Error: HOME is unset or not an absolute path\n' >&2
+    exit 78
+fi
+
+src=${BASH_SOURCE[0]}
+if [[ $src == */* ]]; then
+    src=${src%/*}
+    src=${src:-/}
+else
+    src=.
+fi
+
+if ! cd -- "$src" 2>/dev/null; then
+    printf 'Error: source directory not accessible: %s\n' "$src" >&2
+    exit 66
+fi
+src=$PWD
+
+config_home=$XDG_CONFIG_HOME
+if [[ $config_home != /* ]]; then
+    config_home=$HOME/.config
+fi
+targets_file=$config_home/skills-install/targets
+
+raw_targets=()
+raw_names=()
+
+case $target_arg in
+all)
+    if [[ -e $targets_file ]]; then
+        if [[ ! -f $targets_file || ! -r $targets_file ]]; then
+            printf 'Error: targets file is not a readable file: %s\n' "$targets_file" >&2
+            exit 78
+        fi
+        lineno=0
+        while read -r line || [[ -n $line ]]; do
+            ((++lineno))
+            if [[ -z $line || $line == '#'* ]]; then
+                continue
+            fi
+            if [[ $line == '~' ]]; then
+                line=$HOME
+            elif [[ $line == '~/'* ]]; then
+                line=$HOME/${line#'~/'}
+            fi
+            if [[ $line != /* ]]; then
+                printf 'Error: %s:%d: target must be an absolute path: %s\n' "$targets_file" "$lineno" "$line" >&2
+                exit 78
+            fi
+            resolved_target=${line%/}
+            raw_targets+=("$resolved_target")
+            case $resolved_target in
+            *"claude"*) raw_names+=("claude") ;;
+            *"antigravity"*) raw_names+=("antigravity") ;;
+            *"gemini"*) raw_names+=("gemini") ;;
+            *"codex"*) raw_names+=("codex") ;;
+            *)
+                leaf=${resolved_target##*/}
+                if [[ $leaf == "skills" && $resolved_target == */*/* ]]; then
+                    parent=${resolved_target%/*}
+                    raw_names+=("${parent##*/}")
+                else
+                    raw_names+=("$leaf")
+                fi
+                ;;
+            esac
+        done <"$targets_file"
+        if ((${#raw_targets[@]} == 0)); then
+            printf 'Error: no targets defined in %s\n' "$targets_file" >&2
+            exit 78
+        fi
+    else
+        raw_targets=(
+            "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills"
+            "$HOME/.gemini/skills"
+            "$HOME/.gemini/antigravity-cli/skills"
+            "$HOME/.gemini/config/skills"
+            "$HOME/.codex/skills"
+        )
+        raw_names=(
+            "claude"
+            "gemini"
+            "antigravity"
+            "antigravity"
+            "codex"
+        )
+    fi
+    ;;
+claude)
+    raw_targets=("${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills")
+    raw_names=("claude")
+    ;;
+gemini)
+    raw_targets=("$HOME/.gemini/skills")
+    raw_names=("gemini")
+    ;;
+antigravity | atugravity | agy)
+    raw_targets=(
+        "$HOME/.gemini/antigravity-cli/skills"
+        "$HOME/.gemini/config/skills"
+    )
+    raw_names=(
+        "antigravity"
+        "antigravity"
+    )
+    ;;
+codex)
+    raw_targets=("$HOME/.codex/skills")
+    raw_names=("codex")
+    ;;
+*)
+    printf 'Error: unknown target: %s\n\n%s\n' "$target_arg" "$usage" >&2
+    exit 64
+    ;;
+esac
+
+# Deduplicate target paths while preserving display labels
+targets=()
+target_names=()
+seen_targets=$'\n'
+for ((t = 0; t < ${#raw_targets[@]}; t++)); do
+    tgt=${raw_targets[t]}
+    tname=${raw_names[t]}
+    if [[ $seen_targets == *$'\n'"$tgt"$'\n'* ]]; then
+        continue
+    fi
+    seen_targets+=$tgt$'\n'
+    targets+=("$tgt")
+    target_names+=("$tname")
+done
+
+skipped=0
+seen=$'\n'
+skill_files=()
+skill_names=()
+name_width=0
+
+if [[ -n $skill_arg ]]; then
+    target_skill_file=$skill_arg
+    if [[ $target_skill_file != /* ]]; then
+        target_skill_file=$src/$target_skill_file
+    fi
+    if [[ ! -f $target_skill_file ]]; then
+        printf 'Error: skill file not found: %s\n' "$skill_arg" >&2
+        exit 66
+    fi
+
+    # Canonicalize path and ensure it is strictly inside $src/*/*.md
+    dir_part=$(cd -- "$(dirname -- "$target_skill_file")" 2>/dev/null && pwd -P)
+    file_part=${target_skill_file##*/}
+    resolved_skill=$dir_part/$file_part
+
+    src_real=$(cd -- "$src" 2>/dev/null && pwd -P)
+    if [[ $resolved_skill != "$src_real"/*/*.md || $file_part == README.md ]]; then
+        printf 'Error: skill file must be a .md file inside a subfolder of %s\n' "$src" >&2
+        exit 66
+    fi
+
+    name=${file_part%.md}
+    skill_files+=("$resolved_skill")
+    skill_names+=("$name")
+    name_width=${#name}
+else
+    for file in "$src"/*/*.md; do
+        if [[ ! -f $file ]]; then
+            continue
+        fi
+        name=${file##*/}
+        if [[ $name == README.md ]]; then
+            continue
+        fi
+        name=${name%.md}
+        if [[ $seen == *$'\n'"$name"$'\n'* ]]; then
+            printf 'Skipping %s -> error: duplicate skill name %s\n' "${file#"$src"/}" "$name" >&2
+            ((++skipped))
+            continue
+        fi
+        seen+=$name$'\n'
+        skill_files+=("$file")
+        skill_names+=("$name")
+        if ((${#name} > name_width)); then
+            name_width=${#name}
+        fi
+    done
+fi
+
+count=${#skill_names[@]}
+if ((count == 0)); then
+    printf 'Error: no skills found in %s\n' "$src" >&2
+    exit 66
+fi
+
+target_width=0
+for tname in "${target_names[@]}"; do
+    if ((${#tname} > target_width)); then
+        target_width=${#tname}
+    fi
+done
+
+# ANSI color styling if connected to a terminal
+c_reset=""
+c_green=""
+c_cyan=""
+c_red=""
+c_dim=""
+c_bold=""
+
+if [[ -t 1 && -z ${NO_COLOR:-} ]]; then
+    c_reset=$'\033[0m'
+    c_green=$'\033[32m'
+    c_cyan=$'\033[36m'
+    c_red=$'\033[31m'
+    c_dim=$'\033[2m'
+    c_bold=$'\033[1m'
+fi
+
+uninstalled=0
+unchanged=0
+failed=0
+for ((t = 0; t < ${#targets[@]}; t++)); do
+    target=${targets[t]}
+    target_name=${target_names[t]}
+    for ((i = 0; i < count; i++)); do
+        name=${skill_names[i]}
+        file=${skill_files[i]}
+        dir=$target/$name
+        link=$dir/SKILL.md
+        reason=
+        status="ok"
+
+        if [[ ! -e $link && ! -L $link ]]; then
+            status="unchanged"
+        elif [[ -L $link ]]; then
+            # Check if symlink points to our source repository file
+            if [[ $link -ef $file ]]; then
+                rm -f -- "$link" 2>/dev/null
+                if (($? != 0)); then
+                    reason="cannot remove symlink"
+                    status="error"
+                else
+                    status="ok"
+                    # Remove the skill directory if it is now empty
+                    rmdir -- "$dir" 2>/dev/null
+                fi
+            else
+                reason="SKILL.md points to another location, leaving intact"
+                status="unchanged"
+            fi
+        elif [[ -e $link ]]; then
+            reason="SKILL.md is a regular file, skipping removal"
+            status="error"
+        fi
+
+        case $status in
+        ok)
+            status_formatted="${c_green}ok${c_reset}"
+            ((++uninstalled))
+            printf "%-*s ${c_dim}->${c_reset} %-*s  %s\n" \
+                "$target_width" "$target_name" "$name_width" "$name" "$status_formatted"
+            ;;
+        unchanged)
+            status_formatted="${c_cyan}unchanged${c_reset}"
+            ((++unchanged))
+            printf "%-*s ${c_dim}->${c_reset} %-*s  %s\n" \
+                "$target_width" "$target_name" "$name_width" "$name" "$status_formatted"
+            ;;
+        error)
+            status_formatted="${c_red}error${c_reset}"
+            ((++failed))
+            if [[ -n $reason ]]; then
+                printf "%-*s ${c_dim}->${c_reset} %-*s  %s ${c_dim}(%s)${c_reset}\n" \
+                    "$target_width" "$target_name" "$name_width" "$name" "$status_formatted" "$reason" >&2
+            else
+                printf "%-*s ${c_dim}->${c_reset} %-*s  %s\n" \
+                    "$target_width" "$target_name" "$name_width" "$name" "$status_formatted" >&2
+            fi
+            ;;
+        esac
+    done
+done
+
+summary="${c_bold}${uninstalled}${c_reset} uninstalled, ${c_bold}${unchanged}${c_reset} unchanged, ${c_bold}${failed}${c_reset} failed"
+if ((skipped > 0)); then
+    summary+=", ${c_bold}${skipped}${c_reset} skipped"
+fi
+
+if ((failed > 0 || skipped > 0)); then
+    printf '\nFinished with errors: %s\n' "$summary" >&2
+    exit 1
+fi
+
+printf '\nDone: %s\n' "$summary"
+exit 0
