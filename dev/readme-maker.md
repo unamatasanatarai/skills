@@ -1,5 +1,5 @@
 ---
-name: readme-marketing-from-project
+name: readme-maker
 description: Commercial, product-focused GitHub README generator. Analyzes real project code and documentation to produce persuasive, benefit-oriented product landing pages embedded in GitHub repositories.
 ---
 
@@ -156,6 +156,7 @@ The README must remain factually grounded.
 * Invent URLs
 * Invent commands
 * Invent setup steps
+* Include a "Repository Structure", "Project Structure", "Directory Structure", or file tree section (NEVER include repository/file trees)
 
 Do not claim something is:
 
@@ -658,6 +659,7 @@ Use:
 Avoid:
 
 * Huge walls of text
+* Repository structure, project structure, directory structure, or ASCII file trees (strictly prohibited)
 * Excessive badges
 * Repetitive feature lists
 * Long technical explanations above the fold
@@ -881,6 +883,7 @@ Before producing the README, verify:
 * Do NOT wrap the entire README in a code fence
 * Do NOT use citations such as `[cite_start]`
 * Do NOT invent content to fill sections
+* Do NOT include a "Repository Structure", "Directory Structure", or file tree section
 
 The final README should feel like:
 

@@ -1,8 +1,8 @@
 # Skills
 
-Evidence-driven, specialized AI agent capabilities designed for software engineering, system architecture, product discovery, and project management across modern AI environments.
+Production-grade, evidence-driven capability playbooks that turn AI coding agents into ruthless security auditors, principal architects, and deterministic product operators.
 
-Skills replaces generic, polite LLM responses with rigorous, role-specific operational playbooks. Instead of unverified advice or hallucinated plans, each skill enforces source-to-sink evidence tracing, strict confidence grading, prompt injection defense, and structured output contracts.
+Skills delivers self-contained, battle-tested operational prompts designed for Claude Code, Gemini CLI, Google Antigravity, and OpenAI Codex. Instead of polite platitudes, unverified suggestions, and hallucinated meeting agreements, each skill enforces source-to-sink evidence tracing, explicit confidence ratings, prompt injection defense, and strict output contracts.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Platform: Claude | Gemini | Antigravity | Codex](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Antigravity%20%7C%20Codex-lightgrey.svg)]()
@@ -11,87 +11,93 @@ Skills replaces generic, polite LLM responses with rigorous, role-specific opera
 
 ## Why Skills
 
-General-purpose agent prompts fail when the stakes are high:
+General-purpose LLM prompts fail when engineering and operational stakes are high:
 
-* **Vague and Hallucinated Code Audits**: Conventional AI reviewers skim the happy path, report speculative vulnerabilities, miss concurrency races and memory retention defects, and pad reports with noisy stylistic advice.
-* **Unstructured System Architecture**: LLMs often generate textbook microservice diagrams without probing edge cases, failure states, or trade-offs.
-* **Disconnected Product Deliverables**: Moving from architecture to PRDs, roadmaps, and agile stories frequently loses critical technical context.
-* **Unreliable Meeting Notes**: Standard conversational summarizers frequently invent commitments, confuse discussion points with decided outcomes, and drop action item owners.
+* **Superficial Code Audits**: Standard AI reviewers browse the happy path, invent non-existent CVEs, miss critical concurrency races and memory retention leaks, and pollute reports with trivial style nitpicks.
+* **Unanchored Architecture**: Models routinely sketch generic microservice diagrams without interrogating traffic thresholds, failure modes, bounded contexts, or operational costs.
+* **Disconnected Product Handoffs**: Moving from architecture blueprints to PRDs, roadmaps, and agile user stories frequently drops critical constraints and edge cases.
+* **Hallucinated Meeting Outcomes**: Default summaries turn unresolved arguments into false decisions and misattribute action items.
 
-**Skills** eliminates guesswork by providing specialized operational contracts that hold agents to the standards of principal architects, security researchers, and precision technical managers.
+**Skills** eliminates guesswork by packaging autonomous playbooks that hold agents to the standards of principal systems architects, offensive security reviewers, and rigorous technical managers.
 
 ---
 
-## Skill Catalog by Domain
+## Featured Capabilities
 
 ### 1. Software Engineering & Security (`dev/`)
 
 * **[Adversarial Review](dev/adversarial-review.md)** (`adversarial-review`)  
-  *Ruthless AppSec, correctness, and performance audit engine.*  
-  Hunts exploitable security flaws (IDOR, injection, SSRF, auth boundaries), concurrency hazards (races, deadlocks, TOCTOU), memory retention/leaks, CPU waste, and algorithmic bottlenecks with source-to-sink evidence tracing.
+  *Offensive AppSec, correctness, and performance audit engine.*  
+  Conducts hostile code audits across applications, PR diffs, and critical hot paths. Hunts for exploitable security flaws (IDOR, injection, SSRF, broken trust boundaries), concurrency hazards (races, deadlocks, TOCTOU), memory retention/leaks, CPU waste, and algorithmic bottlenecks. Mandates source-to-sink traces, explicit certainty ratings (`Confirmed`, `Likely`, `Needs validation`), minimal reproduction steps, and regression verification plans.
+
 * **[Hostile Review](dev/hostile-review.md)** (`hostile-review`)  
-  *Execution-mode budgeted security and performance auditor.*  
-  Tailors audit intensity to operational contexts with dedicated modes for **Full audit**, **Diff / PR review**, **Targeted path**, and **Snippet analysis**, systematically attempting to disprove candidate findings before reporting.
+  *Budgeted code audit engine with systematic candidate disproof.*  
+  Enforces dedicated execution modes (**Full audit**, **Diff / PR review**, **Targeted path**, **Snippet analysis**). Systematically attempts to disprove candidate findings before reporting them to eliminate false positives.
+
 * **[Strict Pure Bash Review](dev/bash-review-strict.md)** (`bash-review-strict`)  
-  *High-performance pure Bash refactoring and review skill.*  
-  Transforms shell scripts into flat, linear execution flows that eliminate subshells, forks, pipelines, and external binaries in favor of robust Bash built-ins and parameter expansions.
-* **[Adversarial macOS & Swift Audit](dev/cr-adversarial-swift.md)** (`cr-adversarial-swift`)  
-  *Specialized macOS platform assurance, exploitation, and optimization team.*  
-  Deeply investigates Swift Concurrency/Actors, AppKit/SwiftUI lifecycle, sandboxing, entitlements, Accessibility, Mach ports, memory leaks, and distribution readiness.
-* **[Commercial Project README Generator](dev/readme-marketing-from-project.md)** (`readme-marketing-from-project`)  
-  *Product-focused GitHub README generator.*  
-  Analyzes project code and architecture to produce persuasive, commercial-grade product landing pages embedded directly in GitHub repositories.
+  *High-performance pure Bash refactoring engine.*  
+  Transforms shell scripts into flat, linear execution flows. Eliminates subshells, forks, pipelines, and external utilities (`sed`, `awk`, `cut`, `grep`) in favor of native Bash built-ins, parameter expansions, and regex matching.
+
+* **[Commercial README Maker](dev/readme-maker.md)** (`readme-maker`)  
+  *Product-focused GitHub documentation generator.*  
+  Analyzes repository source code, architecture, and configuration to produce high-converting product landing pages embedded directly within GitHub repositories.
 
 ### 2. System Architecture (`architecture/`)
 
 * **[HLD Discovery & Drill-Me](architecture/hld-drill-me.md)** (`hld-drill-me`)  
-  *Principal Systems Architect technical discovery interrogator.*  
-  Systematically interrogates ambiguous project ideas through a disciplined 7-phase interview to force specificity, challenge weak decisions, and build complete, production-grade High-Level Designs.
+  *Principal Systems Architect discovery interrogator.*  
+  Systematically interrogates ambiguous project ideas through a disciplined 7-phase interview to extract validated technical requirements, challenge weak decisions, and build complete, production-grade High-Level Designs.
+
 * **[HLD Product System Designer](architecture/hld-designer.md)** (`hld-designer`)  
   *Interactive HLD interview simulator and product system designer.*  
-  Conducts a realistic architectural grill session, evaluates tradeoffs, and delivers structured product architecture blueprints for Product Owners and engineering alignment.
+  Simulates an architectural grill session, evaluates non-functional requirements and tradeoffs, and produces structured product architecture blueprints for engineering alignment.
+
 * **[FAANG-Caliber HLD Review](architecture/hld-faang-review.md)** (`hld-faang-review`)  
-  *Senior Product Owner and large-scale architecture reviewer.*  
-  Evaluates HLD documents across Web, PHP distributed backends, and Android systems for scalability limits, integration contracts, failure resilience, and maintainability.
+  *Large-scale architecture review specialist.*  
+  Evaluates High-Level Designs across Web platforms, PHP distributed backend ecosystems, and Android mobile applications for scalability ceilings, security boundaries, resilience, and operational maintainability.
+
 * **[Reverse-Engineer HLD from Project](architecture/hld-from-project.md)** (`hld-from-project`)  
   *Reconstruction blueprint generator.*  
-  Reverse-engineers existing codebases, repositories, and documentation to create comprehensive, implementation-ready High-Level Designs for system recreation from scratch.
+  Reverse-engineers existing codebases, schemas, APIs, and configuration files into implementation-ready High-Level Designs for system recreation from scratch.
 
 ### 3. Product Strategy & Execution (`product/`)
 
 * **[HLD to PRD Translator](product/hld-to-prd.md)** (`hld-to-prd`)  
-  *Architecture-to-product requirements translation specialist.*  
-  Transforms technical High-Level Design blueprints into comprehensive, user-centric Product Requirements Documents (PRDs) with testable acceptance criteria, personas, and measurable KPIs.
+  *Technical architecture-to-product specification translator.*  
+  Transforms technical High-Level Designs into comprehensive Product Requirements Documents (PRDs) with testable acceptance criteria, user personas, failure modes, and measurable KPIs.
+
 * **[Technical Sequence Roadmap Planner](product/roadmap.md)** (`roadmap`)  
-  *PRD-to-execution technical sequence planner.*  
-  Decomposes product requirements into execution-ready, dependency-mapped, milestone-based build orders distinguishing sequential paths from parallel tracks.
+  *PRD-to-execution sequence planner.*  
+  Decomposes product requirements into milestone-based build orders, mapping dependencies and distinguishing sequential paths from parallel tracks.
+
 * **[Agile User Story Generator](product/stories.md)** (`stories`)  
   *INVEST-compliant user story creator.*  
-  Synthesizes product and architectural documentation into clear user stories grouped by epic, complete with testable acceptance criteria and priority tiers.
+  Synthesizes specifications and architecture docs into user stories grouped by epic, complete with testable acceptance criteria and priority tiers.
 
 ### 4. Operations & Project Management (`project-management/`)
 
 * **[Notka ze Spotkania](project-management/notka-ze-spotkania.md)** (`notka-ze-spotkania`)  
   *Deterministic 4-section meeting extraction engine.*  
-  Converts chaotic meeting transcripts, voice memos, and rough notes into clean records (**Data i uczestnicy**, **Decyzje**, **Zadania do wykonania**, **Otwarte pytania**), strictly isolating decisions from discussions and defending against prompt injection.
+  Transforms messy transcripts, voice memos, and rough notes into structured records (**Data i uczestnicy**, **Decyzje**, **Zadania do wykonania**, **Otwarte pytania**). Enforces prompt injection defense by treating input strictly as data and explicitly flags unassigned responsibilities.
+
 * **[Development Task Breakdown](project-management/tasks.md)** (`tasks`)  
-  *Actionable developer task decomposition specialist.*  
-  Translates documentation and user stories into bite-sized, independently deliverable engineering tasks with explicit acceptance criteria, context summaries, and dependencies.
+  *Actionable engineering task decomposition specialist.*  
+  Translates documentation and user stories into bite-sized, independently deliverable developer tasks with explicit acceptance criteria, context summaries, and dependencies.
 
 ### 5. Meta & Prompt Engineering (`prompt-engineering/`)
 
 * **[Meta Prompt Optimizer](prompt-engineering/meta.md)** (`meta`)  
-  *Master prompt engineering and optimization specialist.*  
-  Transforms topics, goals, audiences, and output constraints into self-contained, high-performance LLM prompts with step-by-step thinking requirements, validation rules, and output constraints.
+  *Master prompt engineering specialist.*  
+  Transforms topics, goals, target audiences, and constraints into self-contained, high-performance LLM prompts with step-by-step thinking requirements and output validation rules.
 
 ---
 
 ## Core Engineering Principles
 
-| Principle | Execution in Skills |
+| Principle | Implementation in Skills |
 |---|---|
-| **Evidence Over Speculation** | Every technical finding must cite line numbers, symbols, and data flows. Plausible hypotheses without complete traces must be labeled `Needs validation`. |
-| **Zero Hallucination Tolerance** | Meeting decisions, architectural details, and task owners are never inferred without evidence; missing details are preserved as open questions. |
+| **Evidence Over Speculation** | Every technical finding must cite line numbers, symbols, and data flows. Unverified leads remain labeled `Needs validation`. |
+| **Zero Hallucination Tolerance** | Meeting decisions, architectural details, and task owners are never inferred; unstated details are preserved as open questions or unassigned items. |
 | **Prompt Injection Resilience** | Agent instructions explicitly treat external transcripts, code comments, and test fixtures as untrusted data rather than operational commands. |
 | **Verification-First Remediation** | Audit findings must include minimal actionable fixes accompanied by concrete regression tests, benchmarks, or reproduction procedures. |
 
@@ -101,18 +107,18 @@ General-purpose agent prompts fail when the stakes are high:
 
 ```text
 1. Select Target Agent Environment (Claude, Gemini, Antigravity, or Codex)
-2. Deploy Skill via the unified CLI (`./install <target>`)
-3. Pass your source code, pull request diff, transcript, or design doc
+2. Deploy Skills via the unified CLI (`./install <target>`)
+3. Supply source code, pull request diffs, transcripts, or design docs
 4. Receive structured, evidence-backed findings and actionable outputs
 ```
 
-Each skill is distributed as a self-contained Markdown definition with YAML frontmatter, making it portable across agent runtimes and local IDE configurations.
+Each skill is distributed as a self-contained Markdown definition with YAML frontmatter, making it fully portable across agent runtimes, local IDE configurations, and custom agent workflows.
 
 ---
 
 ## Supported Environments
 
-The bundled `install` tool provides native symlink deployment into all major coding agent configurations:
+The repository includes standalone CLI management tools (`install` and `uninstall`) with native symlink deployment:
 
 | Target | Description | Default Path |
 |---|---|---|
@@ -126,47 +132,57 @@ The bundled `install` tool provides native symlink deployment into all major cod
 
 ## Quick Start
 
-### 1. Install or Uninstall Skills
+### 1. Install Skills to Your Agent
 
-Use the standalone `install` and `uninstall` tools to manage symlinks in your agent directories:
+Deploy skills across your agent environments using the standalone `install` tool:
 
 ```bash
 # Display help and usage
 ./install
-./uninstall
 
 # Install all skills into all supported agent environments
 ./install all
 
-# Uninstall all skills from all supported agent environments
-./uninstall all
-
-# Install / uninstall across a specific agent
+# Install all skills into a specific agent
 ./install antigravity
-./uninstall antigravity
 ./install claude
-./uninstall claude
 ./install gemini
-./uninstall gemini
 ./install codex
-./uninstall codex
 ```
 
-### 2. Selective Skill Management
+### 2. Selective Skill Installation
 
-Install or uninstall individual skills by passing the `--skill` flag:
+Install individual skills by passing the `--skill` flag:
 
 ```bash
 # Install only the adversarial code review skill into Claude
 ./install claude --skill=dev/adversarial-review.md
 
-# Uninstall only a specific skill from Gemini
+# Install the HLD discovery skill into Antigravity
+./install antigravity --skill=architecture/hld-drill-me.md
+
+# Install the meeting notes specialist into Gemini
+./install gemini --skill=project-management/notka-ze-spotkania.md
+```
+
+### 3. Uninstalling Skills
+
+Remove managed symlinks cleanly using the `uninstall` tool:
+
+```bash
+# Display help and usage
+./uninstall
+
+# Remove all skills from all environments
+./uninstall all
+
+# Remove a specific skill from a single target
 ./uninstall gemini --skill=prompt-engineering/meta.md
 ```
 
-### 3. Custom Installation Targets
+### 4. Custom Installation Targets
 
-To configure custom destination directories, create a targets configuration file at `$XDG_CONFIG_HOME/skills-install/targets` (default: `~/.config/skills-install/targets`):
+To configure custom destination directories, create a targets file at `$XDG_CONFIG_HOME/skills-install/targets` (default: `~/.config/skills-install/targets`):
 
 ```text
 # Custom agent skill locations
@@ -178,34 +194,29 @@ When present, `./install all` reads from this file automatically.
 
 ---
 
-## Repository Structure
+## Invoking Skills in Agents
 
+Once installed, invoke skills naturally within your agent chat or terminal:
+
+### Code Audits
 ```text
-skills/
-├── LICENSE                                # MIT License
-├── README.md                              # Repository overview and skill documentation
-├── install                                # Standalone CLI installer with multi-target support
-├── uninstall                              # Standalone CLI uninstaller matching install options
-├── architecture/
-│   ├── hld-designer.md                    # Interactive HLD interview simulator & designer
-│   ├── hld-drill-me.md                    # Technical discovery interrogation facilitator
-│   ├── hld-faang-review.md                # FAANG-caliber HLD reviewer (Web, PHP, Android)
-│   └── hld-from-project.md                # Reverse-engineering HLD blueprint generator
-├── dev/
-│   ├── adversarial-review.md              # AppSec, correctness, and performance audit engine
-│   ├── bash-review-strict.md              # Pure Bash performance refactoring & review
-│   ├── cr-adversarial-swift.md            # Adversarial macOS & Swift application audit
-│   ├── hostile-review.md                  # Mode-budgeted adversarial code review skill
-│   └── readme-marketing-from-project.md   # Commercial GitHub README generator
-├── product/
-│   ├── hld-to-prd.md                      # HLD to Product Requirements Document translator
-│   ├── roadmap.md                         # Technical sequence roadmap planner
-│   └── stories.md                         # Agile INVEST user story generator
-├── project-management/
-│   ├── notka-ze-spotkania.md              # Deterministic 4-section meeting extraction engine
-│   └── tasks.md                           # Developer task breakdown specialist
-└── prompt-engineering/
-    └── meta.md                            # Master prompt optimization & engineering specialist
+"Run an adversarial security, performance, and memory review of this repository."
+"Review this PR; prioritize exploitable flaws, races, leaks, and regressions."
+"Audit this code path as if you were trying to break it."
+```
+
+### Architecture Discovery & Design
+```text
+"Drill me on my idea for an event-driven payment processing platform."
+"Simulate an HLD review session for a multi-tenant SaaS dashboard."
+"Reverse-engineer an HLD from this repository."
+```
+
+### Meeting Notes & Product Specs
+```text
+"Wygeneruj notatkę z poniższego spotkania: [wklej transkrypcję / notatki]"
+"Translate this HLD into a full PRD with acceptance criteria."
+"Break down this feature into developer tasks."
 ```
 
 ---
