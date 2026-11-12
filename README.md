@@ -42,7 +42,30 @@ General-purpose LLM prompts fail when engineering and operational stakes are hig
   *Product-focused GitHub documentation generator.*  
   Analyzes repository source code, architecture, and configuration to produce high-converting product landing pages embedded directly within GitHub repositories.
 
-### 2. System Architecture (`architecture/`)
+### 2. Systematic Security Audits (`security/`)
+
+A role-separated audit pipeline. The three skills share a `.audit/` workspace in the audited repository (`inventory.md`, `progress.md`, `targets/`, `alerts/`, `investigations/`) as their handoff contract; each skill embeds the templates it writes, and none spawns another automatically.
+
+* **[Security Scout](security/security-scout.md)** (`security-scout`)  
+  *Attack-surface mapper and audit backlog generator.*  
+  Maps trust boundaries, entry points, parsers, privileged operations, and concurrency hotspots, then turns them into small, falsifiable `TARGET-###` audit questions with explicit invariants, methods, and completion criteria, prioritized `P0`–`P3` by audit leverage.
+
+* **[Security Analyst](security/security-analyst.md)** (`security-analyst`)  
+  *Target executor and evidence-backed alert author.*  
+  Traces each assigned target from entry point to sensitive operation, checks both the suspected failure and existing defenses, and records either a reproducible `ALERT-###` with provisional severity and counter-evidence, or a transparent `AUDITED` / `PARTIAL` result.
+
+* **[Security Specialist](security/security-specialist.md)** (`security-specialist`)  
+  *Root-cause validator and variant hunter.*  
+  Independently re-validates an alert, generalizes it into a root-cause pattern, and hunts sibling implementations, incomplete fixes, and multi-step chains across the codebase, documenting exact search coverage and feeding new bug classes back to Scout.
+
+**Suggested run order:**
+
+1. `security-scout` — map the repo and create targets.
+2. `security-analyst TARGET-001 TARGET-002` — audit selected targets.
+3. `security-specialist ALERT-001` — validate and hunt variants.
+4. Feed Specialist's new bug patterns back into Scout for another campaign.
+
+### 3. System Architecture (`architecture/`)
 
 * **[HLD Discovery & Drill-Me](architecture/hld-drill-me.md)** (`hld-drill-me`)  
   *Principal Systems Architect discovery interrogator.*  
@@ -60,7 +83,7 @@ General-purpose LLM prompts fail when engineering and operational stakes are hig
   *Reconstruction blueprint generator.*  
   Reverse-engineers existing codebases, schemas, APIs, and configuration files into implementation-ready High-Level Designs for system recreation from scratch.
 
-### 3. Product Strategy & Execution (`product/`)
+### 4. Product Strategy & Execution (`product/`)
 
 * **[HLD to PRD Translator](product/hld-to-prd.md)** (`hld-to-prd`)  
   *Technical architecture-to-product specification translator.*  
@@ -74,7 +97,7 @@ General-purpose LLM prompts fail when engineering and operational stakes are hig
   *INVEST-compliant user story creator.*  
   Synthesizes specifications and architecture docs into user stories grouped by epic, complete with testable acceptance criteria and priority tiers.
 
-### 4. Operations & Project Management (`project-management/`)
+### 5. Operations & Project Management (`project-management/`)
 
 * **[Notka ze Spotkania](project-management/notka-ze-spotkania.md)** (`notka-ze-spotkania`)  
   *Deterministic 4-section meeting extraction engine.*  
@@ -84,7 +107,7 @@ General-purpose LLM prompts fail when engineering and operational stakes are hig
   *Actionable engineering task decomposition specialist.*  
   Translates documentation and user stories into bite-sized, independently deliverable developer tasks with explicit acceptance criteria, context summaries, and dependencies.
 
-### 5. Meta & Prompt Engineering (`prompt-engineering/`)
+### 6. Meta & Prompt Engineering (`prompt-engineering/`)
 
 * **[Meta Prompt Optimizer](prompt-engineering/meta.md)** (`meta`)  
   *Master prompt engineering specialist.*  
@@ -158,6 +181,11 @@ Install individual skills by passing the `--skill` flag:
 # Install only the adversarial code review skill into Claude
 ./install claude --skill=dev/adversarial-review.md
 
+# Install the security audit pipeline into Claude
+./install claude --skill=security/security-scout.md
+./install claude --skill=security/security-analyst.md
+./install claude --skill=security/security-specialist.md
+
 # Install the HLD discovery skill into Antigravity
 ./install antigravity --skill=architecture/hld-drill-me.md
 
@@ -203,6 +231,13 @@ Once installed, invoke skills naturally within your agent chat or terminal:
 "Run an adversarial security, performance, and memory review of this repository."
 "Review this PR; prioritize exploitable flaws, races, leaks, and regressions."
 "Audit this code path as if you were trying to break it."
+```
+
+### Systematic Security Audits
+```text
+"Run security-scout on this repository and build an audit backlog."
+"Run security-analyst on TARGET-003 and TARGET-007."
+"Run security-specialist on ALERT-002 and hunt for variants of the same root cause."
 ```
 
 ### Architecture Discovery & Design
