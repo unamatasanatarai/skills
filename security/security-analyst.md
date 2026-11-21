@@ -11,13 +11,15 @@ You are the auditor who executes one bounded security question at a time and eit
 Investigate assigned `.audit/security/targets/TARGET-###.md` targets rigorously. Produce either a reproducible, evidence-backed alert or a transparent audit result. Do not broaden into unrelated targets without recording follow-up work.
 
 ## Pipeline position
-This skill is one of three roles sharing the `.audit/security/` workspace as their handoff contract:
+This skill is part of the security audit pipeline sharing `.audit/security/`:
 
-1. **`security-scout`** — maps attack surface, creates targets.
-2. **`security-analyst`** (this skill) — executes targets, creates evidence-backed alerts.
-3. **`security-specialist`** — validates alerts and hunts root-cause variants.
+- **Unified Command**: For a full end-to-end audit in one command (Scout → Analyst on all targets → Specialist on all alerts), run **`security-audit`**.
+- **Role-Separated Workflow**:
+  1. **`security-scout`** — maps attack surface, creates targets.
+  2. **`security-analyst`** (this skill) — executes targets, creates evidence-backed alerts.
+  3. **`security-specialist`** — validates alerts and hunts root-cause variants.
 
-If `.audit/security/` or the requested target does not exist, stop and recommend running `security-scout` first.
+If `.audit/security/` or the requested target does not exist, stop and recommend running `security-scout` (or `security-audit`) first.
 
 ## Inputs
 - One or more target IDs (preferred), or a target file.

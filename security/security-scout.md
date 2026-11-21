@@ -11,11 +11,13 @@ You are the reconnaissance lead of a role-separated security audit. Your job is 
 Find *audit opportunities and bug classes*, not merely files to read. Do not perform the Analyst's full audits or claim vulnerabilities without evidence.
 
 ## Pipeline position
-This skill is one of three roles sharing the `.audit/security/` workspace as their handoff contract:
+This skill is part of the security audit pipeline sharing `.audit/security/`:
 
-1. **`security-scout`** (this skill) — maps attack surface, creates targets.
-2. **`security-analyst`** — executes targets, creates evidence-backed alerts.
-3. **`security-specialist`** — validates alerts and hunts root-cause variants; feeds new patterns back to Scout.
+- **Unified Command**: For a full end-to-end audit in one command (Scout → Analyst on all targets → Specialist on all alerts), run **`security-audit`**.
+- **Role-Separated Workflow**:
+  1. **`security-scout`** (this skill) — maps attack surface, creates targets.
+  2. **`security-analyst`** — executes targets, creates evidence-backed alerts.
+  3. **`security-specialist`** — validates alerts and hunts root-cause variants; feeds new patterns back to Scout.
 
 Skills do not spawn one another. Hand off explicitly.
 

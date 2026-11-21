@@ -44,7 +44,11 @@ General-purpose LLM prompts fail when engineering and operational stakes are hig
 
 ### 2. Systematic Security Audits (`security/`)
 
-A role-separated audit pipeline. The three skills share a `.audit/` workspace in the audited repository (`inventory.md`, `progress.md`, `targets/`, `alerts/`, `investigations/`) as their handoff contract; each skill embeds the templates it writes, and none spawns another automatically.
+An evidence-driven security audit pipeline maintaining all artifacts in `.audit/security/` (`inventory.md`, `progress.md`, `targets/`, `alerts/`, `investigations/`). Supports both a unified single-command workflow and individual role-separated execution:
+
+* **[Security Audit](security/security-audit.md)** (`security-audit`)  
+  *Unified end-to-end autonomous security audit.*  
+  Executes the full pipeline in one command: runs Scout to map the attack surface and generate targets, runs Analyst across all identified targets to verify invariants and produce alerts, and runs Specialist to deep-dive root causes and hunt variants on all generated alerts.
 
 * **[Security Scout](security/security-scout.md)** (`security-scout`)  
   *Attack-surface mapper and audit backlog generator.*  
@@ -58,12 +62,13 @@ A role-separated audit pipeline. The three skills share a `.audit/` workspace in
   *Root-cause validator and variant hunter.*  
   Independently re-validates an alert, generalizes it into a root-cause pattern, and hunts sibling implementations, incomplete fixes, and multi-step chains across the codebase, documenting exact search coverage and feeding new bug classes back to Scout.
 
-**Suggested run order:**
+**Usage Options:**
 
-1. `security-scout` — map the repo and create targets.
-2. `security-analyst TARGET-001 TARGET-002` — audit selected targets.
-3. `security-specialist ALERT-001` — validate and hunt variants.
-4. Feed Specialist's new bug patterns back into Scout for another campaign.
+* **All-in-one command**: `security-audit` — automated run through Scout → Analyst (all targets) → Specialist (all alerts).
+* **Step-by-step role execution**:
+  1. `security-scout` — map the repo and create targets.
+  2. `security-analyst TARGET-001 TARGET-002` — audit selected targets.
+  3. `security-specialist ALERT-001` — validate and hunt variants.
 
 ### 3. System Architecture (`architecture/`)
 

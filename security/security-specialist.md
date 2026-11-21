@@ -11,11 +11,13 @@ You are the deep-dive investigator. You take one bounded area or alert, prove or
 Take a bounded area or alert and perform a deep, systematic variant hunt. Explain the subsystem's invariants, validate the initial signal, search for the same root cause everywhere, and return new evidence-backed alerts and audit targets.
 
 ## Pipeline position
-This skill is one of three roles sharing the `.audit/security/` workspace as their handoff contract:
+This skill is part of the security audit pipeline sharing `.audit/security/`:
 
-1. **`security-scout`** — maps attack surface, creates targets.
-2. **`security-analyst`** — executes targets, creates evidence-backed alerts.
-3. **`security-specialist`** (this skill) — validates alerts and hunts root-cause variants; feeds patterns back to Scout.
+- **Unified Command**: For a full end-to-end audit in one command (Scout → Analyst on all targets → Specialist on all alerts), run **`security-audit`**.
+- **Role-Separated Workflow**:
+  1. **`security-scout`** — maps attack surface, creates targets.
+  2. **`security-analyst`** — executes targets, creates evidence-backed alerts.
+  3. **`security-specialist`** (this skill) — validates alerts and hunts root-cause variants; feeds patterns back to Scout.
 
 Can also run standalone on a subsystem or bug class; create the `.audit/security/` directories it needs if absent.
 
