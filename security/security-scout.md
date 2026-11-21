@@ -1,6 +1,6 @@
 ---
 name: security-scout
-description: Map a repository's attack surface and create prioritized, independently auditable security targets. Use to start or expand a systematic vulnerability audit. First role of the Scout → Analyst → Specialist audit pipeline; bootstraps the shared `.audit/` workspace.
+description: Map a repository's attack surface and create prioritized, independently auditable security targets. Use to start or expand a systematic vulnerability audit. First role of the Scout → Analyst → Specialist audit pipeline; bootstraps the shared `.audit/security/` workspace.
 ---
 
 # Security Scout
@@ -11,7 +11,7 @@ You are the reconnaissance lead of a role-separated security audit. Your job is 
 Find *audit opportunities and bug classes*, not merely files to read. Do not perform the Analyst's full audits or claim vulnerabilities without evidence.
 
 ## Pipeline position
-This skill is one of three roles sharing the `.audit/` workspace as their handoff contract:
+This skill is one of three roles sharing the `.audit/security/` workspace as their handoff contract:
 
 1. **`security-scout`** (this skill) — maps attack surface, creates targets.
 2. **`security-analyst`** — executes targets, creates evidence-backed alerts.
@@ -21,7 +21,7 @@ Skills do not spawn one another. Hand off explicitly.
 
 ## Inputs
 - Repository root and any stated scope/exclusions.
-- Optional `.audit/` state from previous runs.
+- Optional `.audit/security/` state from previous runs.
 - Optional focus (subsystem, vulnerability class, platform, or threat model).
 
 If scope is missing, inspect the repository and state the inferred scope before proceeding.
@@ -41,8 +41,8 @@ If scope is missing, inspect the repository and state the inferred scope before 
    - Split targets when they would require unrelated reasoning. Merge duplicates.
    - Prioritize by plausible impact, reachability, complexity, and audit leverage. Mark uncertainty; do not present guesses as confirmed defects.
 4. **Persist**
-   - Bootstrap the workspace if absent: `.audit/inventory.md`, `.audit/progress.md`, `.audit/targets/`, `.audit/alerts/`, `.audit/investigations/`.
-   - Create/update `.audit/inventory.md`, `.audit/targets/TARGET-###.md`, and `.audit/progress.md` using the templates below.
+   - Bootstrap the workspace if absent: `.audit/security/inventory.md`, `.audit/security/progress.md`, `.audit/security/targets/`, `.audit/security/alerts/`, `.audit/security/investigations/`.
+   - Create/update `.audit/security/inventory.md`, `.audit/security/targets/TARGET-###.md`, and `.audit/security/progress.md` using the templates below.
    - Assign stable IDs. Never silently recycle IDs or overwrite prior findings.
    - Keep existing state; reconcile before edits. Record newly created, updated, deferred, and duplicate targets.
 5. **Handoff**
@@ -64,9 +64,9 @@ Avoid vague targets such as “check security,” “review networking,” or �
 Use `P0` only for urgent, credible critical exposure; otherwise `P1` (high), `P2` (normal), or `P3` (lower). Priority is audit order, not vulnerability severity. Explain rationale and confidence. Never use a numerical risk score without defining it.
 
 ## Deliverables
-- `.audit/inventory.md`: architecture and attack-surface map.
-- `.audit/targets/`: actionable targets.
-- `.audit/progress.md`: queue, status, coverage, next actions.
+- `.audit/security/inventory.md`: architecture and attack-surface map.
+- `.audit/security/targets/`: actionable targets.
+- `.audit/security/progress.md`: queue, status, coverage, next actions.
 - Final response: concise findings about coverage and next targets; distinguish facts from hypotheses.
 
 ## Safety and quality
@@ -77,7 +77,7 @@ Use `P0` only for urgent, credible critical exposure; otherwise `P1` (high), `P2
 
 ## Templates
 
-### `.audit/targets/TARGET-###.md`
+### `.audit/security/targets/TARGET-###.md`
 
 ```markdown
 # TARGET-### — <short audit question>
@@ -127,7 +127,7 @@ Use `P0` only for urgent, credible critical exposure; otherwise `P1` (high), `P2
 -
 ```
 
-### `.audit/progress.md`
+### `.audit/security/progress.md`
 
 ```markdown
 # Security audit progress
