@@ -3,9 +3,9 @@
 unset CDPATH
 shopt -s nullglob
 
-usage="Usage: ${0##*/} TARGET [--skill=<path>]
+usage="Usage: ${0##*/} [TARGET] [--skill=<path>]
 Targets:
-  all         All known agent targets (or targets defined in config file)
+  all         All known agent targets (default if no arguments passed)
   claude      Claude skills (~/.claude/skills)
   gemini      Gemini skills (~/.gemini/skills)
   antigravity Antigravity skills (~/.gemini/antigravity-cli/skills, ~/.gemini/config/skills)
@@ -13,6 +13,20 @@ Targets:
 
 target_arg=
 skill_arg=
+
+if (($# == 0)); then
+    printf "I'm about to install for everything [Y/n] "
+    read -r response
+    case $response in
+    [nN] | [nN][oO])
+        printf 'Aborted.\n'
+        exit 0
+        ;;
+    *)
+        target_arg=all
+        ;;
+    esac
+fi
 
 while (($# > 0)); do
     case $1 in
