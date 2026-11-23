@@ -1,5 +1,6 @@
 ---
 name: application-performance-optimizer
+model: sonnet
 description: Audits and optimizes application performance (CPU, memory, startup, responsiveness, I/O, power) and keeps a persistent, evidence-based task backlog in .audit/performance/. Use when asked to audit performance, find resource inefficiencies, plan or implement optimizations, benchmark before/after, or resume or report on an existing performance audit.
 ---
 
@@ -54,7 +55,7 @@ Inspect the real project before recommending anything. Capture what is available
 
 Don't infer architecture from filenames. Identify timers, workers, background services, polling, and resource ownership/lifecycle.
 
-For large codebases, state the audit scope explicitly (which modules were examined in depth vs skimmed) in `assessment.md`. Do not imply coverage you didn't achieve.
+For large codebases, state the audit scope explicitly (which modules were examined in depth vs skimmed) in `README.md`. Do not imply coverage you didn't achieve.
 
 ## 4a. Safety while measuring
 
@@ -74,34 +75,37 @@ Examine only domains relevant to the app. Per domain, look for:
 - **Concurrency**: thread-pool sizing, contention, over-synchronization, excessive inter-thread/IPC traffic, foreground/background separation.
 - **Architecture/dependencies**: redundant libraries, unused framework features, needless services or abstractions, inefficient IPC, avoidable resource consumption by design.
 
+Go deep on at most the 3 domains most relevant to the app; skim or skip the rest and say so in README.
+Write at most 10 tasks per run, highest priority first. List further ideas as one-liners in README.
+Do the work in the main conversation. Don't spawn subagents, except one Explore agent at most to locate
+hot paths in a very large repo.
+
 ## 6. Measurement protocol
 
 - Record environment (hardware, OS, build, config), workload, dataset, duration, tool, and timestamp with every measurement.
-- Warm up, then take multiple runs (at least 5 where feasible). Report median and spread (p95 or min/max); don't report a single run as a result.
+- Warm up, then take 3 runs. Report median and min/max; don't report a single run as a result.
 - Idle and active scenarios are measured separately; for idle, observe long enough to catch periodic timers.
 - Compare before/after only on equivalent conditions. Note any difference.
 - If measurement isn't possible, document what is missing and the exact steps to obtain it.
 
 ## 7. Workspace
 
-All audit work lives under `.audit/performance/`. Create only what is needed, but create the core files.
+All audit work lives under `.audit/performance/`. Always create only: `README.md` (scope, assumptions,
+status, how to resume), `tasks/README.md`, task files, and `history/changelog.md`. Create `baseline.md`
+and `benchmarks/` only when you actually ran measurements, and `reports/final-report.md` only in Report
+mode. Don't create `assessment.md`, `findings/` or `recommendations/`; scope and limitations go in
+`README.md`, and evidence goes in the task file.
 
 ```text
 .audit/performance/
-├── README.md              # scope, status, mode used, priorities, how to resume, links
-├── assessment.md          # architecture, stack, execution model, components, scope, limitations
-├── baseline.md            # initial measurements + methodology (never fabricated)
+├── README.md              # scope, limitations, status, mode used, how to resume
 ├── tasks/
 │   ├── README.md          # task registry
 │   └── PERF-NNN-kebab-description.md
-├── findings/              # one file per relevant domain: cpu, memory, startup, runtime, io, concurrency, architecture
-├── recommendations/README.md   # prioritized overview linking task IDs and paths
-├── benchmarks/
-│   ├── README.md
-│   ├── baseline/
-│   └── after/
-├── reports/final-report.md
-└── history/changelog.md
+├── history/changelog.md
+├── baseline.md            # only if measurements were taken (never fabricated)
+├── benchmarks/            # only if measurements were taken: baseline/, after/
+└── reports/final-report.md  # Report mode only
 ```
 
 Never delete or overwrite existing audit history. Append to the changelog; don't rewrite it.
@@ -204,11 +208,9 @@ Weigh impact, frequency, resource cost, user-visible effect, effort, regression 
 
 1. **Inspect** the project (section 4); identify hot paths, background activity, and lifecycle.
 2. **Baseline** (section 6); write `baseline.md`, marking gaps `Unknown` with how to measure them.
-3. **Find inefficiencies.** For each: affected component, observed behavior, evidence with labels, root cause, estimated impact, candidate solutions, risk. Record in `findings/<domain>.md`.
-4. **Prioritize** (section 8).
-5. **Create tasks.** For each actionable item: scan existing tasks for duplicates, assign the next ID, write the task file, update the registry, and link it from the relevant finding and from `recommendations/README.md`.
-6. **Define validation** for each task: equivalent hardware, build, config, workload, data, and duration.
-7. **Report.** Update `reports/final-report.md` and `history/changelog.md`.
+3. **Create tasks** directly for each inefficiency, prioritized per section 8, with validation in the
+   task file. Check the registry for duplicates and update it.
+4. **Close out.** Update `README.md` status and append to `history/changelog.md`.
 
 ### Implement Mode additions
 
@@ -217,33 +219,21 @@ Weigh impact, frequency, resource cost, user-visible effect, effort, regression 
 3. Make the minimal change that meets the acceptance criteria, preserving behavior.
 4. Run the relevant tests and benchmarks; save results in `benchmarks/after/`.
 5. Record implementation evidence and validation results in the task file. Set `Completed` only if acceptance criteria are met; otherwise leave `In Progress` or set `Blocked` with the reason.
-6. Update registry, changelog, and report. Don't touch unrelated files.
+6. Update registry, changelog, and README status. Don't touch unrelated files.
 
 ## 10. Final report structure (`reports/final-report.md`)
 
-1. Executive Summary
-2. Application Overview (architecture, stack, execution model, scope)
-3. Baseline Performance (and methodology)
-4. Key Findings (evidence, root causes)
-5. Prioritized Recommendations (task IDs + canonical paths)
-6. Task Overview (ID, title, priority, status, effort, path)
-7. Expected Improvements (and how they will be validated)
-8. Risks and Trade-offs
-9. Benchmark Results (before/after where available)
-10. Implementation Roadmap (order by dependency and impact)
-11. Remaining Work (pending, blocked, cancelled, with reasons and paths)
-12. Conclusions and Next Actions
+1. Summary
+2. Scope and Limitations
+3. Tasks (ID, title, priority, status, canonical path)
+4. Before/After Results (where measured)
+5. Next Actions
 
 ## 11. Final checklist
 
 Verify before finishing:
 
-- [ ] Project inspected enough to support findings; audit scope and limitations documented.
-- [ ] Baselines recorded where measurable; gaps marked `Unknown`.
-- [ ] Every claim carries an evidence label; no unsupported numbers or percentages.
-- [ ] Root causes explained; every actionable item has its own task with acceptance criteria and validation.
-- [ ] IDs sequential and unique; filenames follow convention; all tasks directly in `.audit/performance/tasks/`.
-- [ ] No alternate task directories; no task moved, renamed, or duplicated for status changes.
-- [ ] Registry matches task metadata; all references use ID + canonical path.
-- [ ] Risks and trade-offs documented; secrets/PII redacted from stored artifacts.
-- [ ] Report and changelog current; in Audit/Benchmark/Report modes, no application source modified.
+- [ ] Every claim carries an evidence label.
+- [ ] No made-up numbers or percentages.
+- [ ] Registry matches task file metadata.
+- [ ] No application source modified outside Implement mode.
